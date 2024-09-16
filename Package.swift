@@ -4,8 +4,24 @@ import PackageDescription
 
 let package = Package(
     name: "Nifty-libs",
-    providers: [
-        .apt(["gfortran", "liblapack3", "liblapacke", "liblapacke-dev", "libopenblas-base", "libopenblas-dev"]),
-        .brew(["homebrew/dupes/lapack", "homebrew/science/openblas"])
+    products: [
+        .library(name: "CLapacke", targets: ["CLapacke"]),
+        .library(name: "CBlas", targets: ["CBlas"])
+    ],
+    targets: [
+        .systemLibrary(
+            name: "CLapacke",
+            providers: [
+                .apt(["gfortran liblapack3", "liblapacke", "liblapacke-dev"]),
+                .brew(["homebrew/dupes/lapack"])
+            ]
+        ),
+        .systemLibrary(
+            name: "CBlas",
+            providers: [
+                .apt(["libopenblas-base", "libopenblas-dev"]),
+                .brew(["homebrew/science/openblas"])
+            ]
+        )
     ]
 )
